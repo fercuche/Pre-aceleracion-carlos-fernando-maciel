@@ -31,6 +31,9 @@ public class Movie {
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate creationDate;
 
+    @Column(name = "movie_rating")
+    private Integer rating;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "genre_id")
     private Genre genre;
