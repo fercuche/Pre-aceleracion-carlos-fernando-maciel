@@ -1,17 +1,14 @@
 package com.alkemy.challenge.dto;
 
-import com.alkemy.challenge.entity.Genre;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
-import java.time.LocalDate;
 
 @Setter
 @Getter
 @AllArgsConstructor
-public class MovieFiltersDto implements Serializable {
+public class MovieFiltersDto {
 
     private String name;
     private String genre;

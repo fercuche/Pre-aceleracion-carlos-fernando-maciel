@@ -16,7 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@SQLDelete(sql = "UPDATE movies SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE movies SET deleted = true WHERE movie_id=?")
 @Where(clause = "deleted = false")
 @Table(name = "movies")
 public class Movie {
@@ -41,8 +41,11 @@ public class Movie {
     private boolean deleted = Boolean.FALSE;
 
     @ManyToOne
-    @JoinColumn(name = "genre_id")
+    @JoinColumn(name = "genre_id", insertable = false, updatable = false)
     private Genre genre;
+
+    @Column(name = "genre_id", nullable = false)
+    private Long genreId;
 
     @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(name = "movies_characters",

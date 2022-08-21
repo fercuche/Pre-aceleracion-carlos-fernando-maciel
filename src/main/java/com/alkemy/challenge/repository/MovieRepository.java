@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Long> {
 
-    List<Movie> findAll(Specification<Movie> specification);
+    List<Movie> findAll(Specification<Movie> spec);
 }

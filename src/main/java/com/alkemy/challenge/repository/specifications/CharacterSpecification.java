@@ -31,20 +31,17 @@ public class CharacterSpecification {
                         )
                 );
             }
-            if (StringUtils.hasLength(String.valueOf(filtersDto.getAge()))) {
+            if (StringUtils.hasLength((filtersDto.getAge()))) {
+                Integer age = Integer.valueOf(filtersDto.getAge());
                 predicates.add(
-                        criteriaBuilder.like(
-                                criteriaBuilder.lower(root.get("age")),
-                                "%" + filtersDto.getAge() + "%"
-                        )
+                        criteriaBuilder.equal(root.get("age"),age)
                 );
             }
-            if (StringUtils.hasLength(String.valueOf(filtersDto.getWeight()))){
+            if (StringUtils.hasLength((filtersDto.getWeight()))){
+                Double weight = Double.valueOf(filtersDto.getWeight());
                 predicates.add(
-                        criteriaBuilder.like(
-                                criteriaBuilder.lower(root.get("weight")),
-                                "%" + filtersDto.getWeight() + "%"
-                        )
+                        criteriaBuilder.equal(root.get("weight"),weight)
+
                 );
             }
             if (!CollectionUtils.isEmpty(filtersDto.getMovies())){
@@ -54,6 +51,13 @@ public class CharacterSpecification {
             }
 
             query.distinct(true);
+
+            String orderByField = "name";
+            query.orderBy(
+                    filtersDto.isAsc() ?
+                            criteriaBuilder.asc(root.get(orderByField)) :
+                            criteriaBuilder.desc(root.get(orderByField))
+            );
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
 

@@ -7,6 +7,7 @@ import com.alkemy.challenge.repository.GenreRepository;
 import com.alkemy.challenge.service.GenreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class GenreServiceImpl implements GenreService {
     private final GenreMapper genreMapper;
     private final GenreRepository genreRepository;
 
+    @Transactional
     public GenreDto save(GenreDto dto){
         Genre genre = genreMapper.genreDto2Entity(dto);
         Genre saved = genreRepository.save(genre);
@@ -24,6 +26,7 @@ public class GenreServiceImpl implements GenreService {
         return result;
     }
 
+    @Transactional(readOnly = true)
     public List<GenreDto> getAll() {
         List<Genre> genres = genreRepository.findAll();
         List<GenreDto> result = genreMapper.genreEntity2DtoList(genres);

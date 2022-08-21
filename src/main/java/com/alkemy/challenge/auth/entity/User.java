@@ -26,9 +26,10 @@ public class User implements UserDetails {
     private Long id;
 
     @Email
+    @Column(nullable = false, unique = true)
     private String username;
 
-    @Size(min = 8)
+    @Column(nullable = false)
     private String password;
 
     private boolean enabled;

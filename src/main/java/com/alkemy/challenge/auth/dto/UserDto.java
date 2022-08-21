@@ -11,8 +11,9 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class UserDto implements Serializable {
-    @Email
+
+    @Email(message = "Must be an email")
     private String username;
-    @Size(min = 8)
+
     private String password;
 }
