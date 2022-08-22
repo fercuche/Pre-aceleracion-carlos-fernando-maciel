@@ -2,6 +2,7 @@ package com.alkemy.challenge.dto;
 
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -13,5 +14,5 @@ public class CharacterDto{
     private Integer age;
     private Integer weight;
     private String story;
-    private List<MovieDto> movies;
+    private List<MovieDto> movies = new ArrayList<>();
 }

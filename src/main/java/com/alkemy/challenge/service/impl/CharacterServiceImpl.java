@@ -10,6 +10,7 @@ import com.alkemy.challenge.repository.CharacterRepository;
 import com.alkemy.challenge.repository.specifications.CharacterSpecification;
 import com.alkemy.challenge.service.CharacterService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,20 +49,27 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Transactional
     public CharacterDto save(CharacterDto dto) throws ParamNotFound {
-        Character character = characterMapper.characterDto2Entity(dto);
-        Character saved = characterRepository.save(character);
-        return characterMapper.characterEntity2Dto(saved,true);
+        if (characterRepository.existsByName(dto.getName())) {
+            throw new IllegalArgumentException("The character already exists");
+        }
+            Character character = characterMapper.characterDto2Entity(dto);
+            Character saved = characterRepository.save(character);
+            return characterMapper.characterEntity2Dto(saved, true);
+
+
     }
 
     @Transactional
     public CharacterDto update(Long id, CharacterDto dto) throws ParamNotFound{
-        Optional<Character> result = characterRepository.findById(dto.getId());
+       Optional<Character> result = characterRepository.findById(id);
         if(!result.isPresent()){
             throw new ParamNotFound("no se encuentra el id");
         }
+        dto.setId(result.get().getId());
         Character character = characterMapper.characterDto2Entity(dto);
         Character saved = characterRepository.save(character);
         return characterMapper.characterEntity2Dto(saved, true);
+
     }
 
     @Transactional

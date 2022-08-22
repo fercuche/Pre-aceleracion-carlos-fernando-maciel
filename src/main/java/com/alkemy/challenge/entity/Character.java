@@ -17,7 +17,7 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "characters")
-@SQLDelete(sql = "UPDATE characters SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE characters SET deleted = true WHERE character_id=?")
 @Where(clause = "deleted = false")
 public class Character {
     @Id

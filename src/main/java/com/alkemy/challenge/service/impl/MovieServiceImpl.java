@@ -55,10 +55,12 @@ public class MovieServiceImpl implements MovieService {
 
     @Transactional
     public MovieDto update(Long id, MovieDto dto) {
-        Optional<Movie> result = movieRepository.findById(dto.getId());
+        Optional<Movie> result = movieRepository.findById(id);
         if(!result.isPresent()) {
             throw new ParamNotFound("no se encuentra el id");
         }
+        result.get();
+        dto.setId(id);
         Movie movie = movieMapper.movieDto2Entity(dto);
         Movie saved = movieRepository.save(movie);
         return movieMapper.movieEntity2Dto(saved,true);

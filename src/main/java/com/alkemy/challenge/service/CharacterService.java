@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CharacterService {
 
-    //List<CharacterDto> getAll();
+    List<CharacterDto> getAll();
     CharacterDto getById(Long id);
     List<CharacterBasicDto> getByFilters(String name, String age, String weight, List<Long> movies, String order);
     CharacterDto save(CharacterDto dto);

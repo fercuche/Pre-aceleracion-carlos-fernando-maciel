@@ -5,6 +5,8 @@ import com.alkemy.challenge.dto.MovieBasicDto;
 import com.alkemy.challenge.dto.MovieDto;
 import com.alkemy.challenge.entity.Movie;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,7 +16,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MovieMapper {
 
+    @Autowired
     private CharacterMapper characterMapper;
+
+    public Movie movieDto2Entity(MovieDto dto) {
+        Movie movie = new Movie();
+        if (dto.getId() != null){
+            movie.setId(dto.getId());
+        }
+        movie.setName(dto.getName());
+        movie.setImage(dto.getImage());
+        movie.setCreationDate(dto.getCreationDate());
+        movie.setRating(dto.getRating());
+        movie.setGenreId(dto.getGenreId());
+        movie.setCharacters(characterMapper.characterDtoList2EntitySet(dto.getCharacters()));
+        return movie;
+    }
+
 
     public MovieDto movieEntity2Dto(Movie movie, boolean loadCharacters) {
         MovieDto dto = new MovieDto();
@@ -29,17 +47,6 @@ public class MovieMapper {
             dto.setCharacters(characters);
         }
         return dto;
-    }
-
-    public Movie movieDto2Entity(MovieDto dto) {
-        Movie movie = new Movie();
-        movie.setName(dto.getName());
-        movie.setImage(dto.getImage());
-        movie.setCreationDate(dto.getCreationDate());
-        movie.setRating(dto.getRating());
-        movie.setGenreId(dto.getGenreId());
-        movie.setCharacters(characterMapper.characterDtoList2EntitySet(dto.getCharacters()));
-        return movie;
     }
 
     public List<MovieDto> movieEntity2DtoList(List<Movie> movies, boolean loadCharacters) {
@@ -65,5 +72,4 @@ public class MovieMapper {
         }
         return dtos;
     }
-
 }

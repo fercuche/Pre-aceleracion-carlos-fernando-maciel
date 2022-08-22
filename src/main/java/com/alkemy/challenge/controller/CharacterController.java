@@ -2,7 +2,9 @@ package com.alkemy.challenge.controller;
 
 import com.alkemy.challenge.dto.CharacterBasicDto;
 import com.alkemy.challenge.dto.CharacterDto;
+import com.alkemy.challenge.dto.MovieDto;
 import com.alkemy.challenge.service.CharacterService;
+import com.alkemy.challenge.service.impl.CharacterServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,12 @@ import java.util.List;
 public class CharacterController {
 
     private final CharacterService characterService;
+
+    @GetMapping("/")
+    public ResponseEntity<List<CharacterDto>> getAll(){
+        List<CharacterDto> characters = characterService.getAll();
+        return ResponseEntity.ok().body(characters);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<CharacterDto> getById(@PathVariable Long id){
@@ -42,7 +50,7 @@ public class CharacterController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<CharacterDto> update(@PathVariable Long id, @Valid @RequestBody CharacterDto dto) {
         CharacterDto result = characterService.update(id, dto);
         return ResponseEntity.ok().body(result);

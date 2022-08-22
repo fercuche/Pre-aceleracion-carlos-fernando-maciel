@@ -18,7 +18,7 @@ public class MovieController {
 
     private final MovieService movieService;
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public ResponseEntity<List<MovieDto>> getAll(){
         List<MovieDto> movies = movieService.getAll();
         return ResponseEntity.ok().body(movies);
@@ -35,7 +35,7 @@ public class MovieController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String genre,
             @RequestParam(required = false) String creationDate,
-            @RequestParam(required = false) String order
+            @RequestParam(required = false, defaultValue = "ASC") String order
     ){
         List<MovieBasicDto> movieDtos = movieService.getByFilters(name, genre, creationDate, order);
         return ResponseEntity.ok(movieDtos);
@@ -47,7 +47,7 @@ public class MovieController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<MovieDto> update(@PathVariable Long id, @Valid @RequestBody MovieDto dto) {
         MovieDto result = movieService.update(id, dto);
         return ResponseEntity.ok().body(result);

@@ -5,6 +5,7 @@ import com.alkemy.challenge.dto.CharacterDto;
 import com.alkemy.challenge.dto.MovieDto;
 import com.alkemy.challenge.entity.Character;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,10 +14,10 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-@RequiredArgsConstructor
 public class CharacterMapper {
 
-    private MovieMapper movieMapper;
+
+    private MovieMapper movieMapper = new MovieMapper();
 
     public CharacterDto characterEntity2Dto(Character character, boolean loadMovies){
         CharacterDto dto = new CharacterDto();
@@ -34,13 +35,16 @@ public class CharacterMapper {
     }
 
     public Character characterDto2Entity(CharacterDto dto){
-        Character character = new Character();
-        character.setImage(dto.getImage());
-        character.setName(dto.getName());
-        character.setAge(dto.getAge());
-        character.setWeight(dto.getWeight());
-        character.setStory(dto.getStory());
-        return character;
+            Character character = new Character();
+            if (dto.getId() != null){
+                character.setId(dto.getId());
+            }
+            character.setImage(dto.getImage());
+            character.setName(dto.getName());
+            character.setAge(dto.getAge());
+            character.setWeight(dto.getWeight());
+            character.setStory(dto.getStory());
+            return character;
     }
 
     public List<CharacterDto> characterEntity2DtoList(List<Character> characters, boolean loadMovies) {
