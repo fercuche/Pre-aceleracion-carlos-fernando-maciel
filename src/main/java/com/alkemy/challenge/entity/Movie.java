@@ -3,8 +3,6 @@ package com.alkemy.challenge.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -16,8 +14,6 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@SQLDelete(sql = "UPDATE movies SET deleted = true WHERE movie_id=?")
-@Where(clause = "deleted = false")
 @Table(name = "movies")
 public class Movie {
     @Id
@@ -38,19 +34,14 @@ public class Movie {
     @Column(name = "movie_rating")
     private Integer rating;
 
-    private boolean deleted = Boolean.FALSE;
-
-    @ManyToOne
-    @JoinColumn(name = "genre_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @Column(name = "genre_id", nullable = false)
-    private Long genreId;
-
-    @ManyToMany(cascade = {CascadeType.PERSIST})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "movies_characters",
-            joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "character_id", referencedColumnName = "character_id"))
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "character_id"))
     private Set<Character> characters = new HashSet<>();
 
 }
