@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,6 +17,8 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "characters")
+@SQLDelete(sql = "UPDATE characters SET deleted = true WHERE character_id=?")
+@Where(clause = "deleted = false")
 public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,8 +41,10 @@ public class Character {
     @Column(name = "character_story")
     private String story;
 
+    private boolean deleted = Boolean.FALSE;
 
-    @ManyToMany(mappedBy = "characters", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+
+    @ManyToMany(mappedBy = "characters")
     private List<Movie> movies = new ArrayList<>();
 
     @Override
